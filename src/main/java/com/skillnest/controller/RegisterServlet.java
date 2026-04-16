@@ -29,17 +29,25 @@ public class RegisterServlet extends HttpServlet {
             
         String username = request.getParameter("username");
         String email = request.getParameter("email");
-        String password = request.getParameter("password"); // In production, hash this!
+        String password = request.getParameter("password");
+        String collegeName = request.getParameter("collegeName");
+        
+        if (userDAO.checkUserExists(username, email)) {
+            request.setAttribute("error", "Username or email is already taken. Please try another.");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
 
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(password);
+        user.setCollegeName(collegeName);
 
         if (userDAO.registerUser(user)) {
             response.sendRedirect("login.jsp?registered=true");
         } else {
-            request.setAttribute("error", "Registration failed. Username or email might already exist.");
+            request.setAttribute("error", "Registration failed due to a system error. Please try again later.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }

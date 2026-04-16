@@ -9,14 +9,17 @@ public class User {
     private String password;
     private Timestamp createdAt;
 
+    private String collegeName;
+
     public User() {
     }
 
-    public User(int id, String username, String email, String password, Timestamp createdAt) {
+    public User(int id, String username, String email, String password, String collegeName, Timestamp createdAt) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.collegeName = collegeName;
         this.createdAt = createdAt;
     }
 
@@ -50,6 +53,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getCollegeName() {
+        return collegeName;
+    }
+    
+    public void setCollegeName(String collegeName) {
+        this.collegeName = collegeName;
     }
 
     public Timestamp getCreatedAt() {

@@ -28,10 +28,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
             
-        String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        User user = userDAO.loginUser(username, password);
+        User user = userDAO.loginUser(email, password);
 
         if (user != null) {
             // *** Session vs Cookie Explanation ***
@@ -47,9 +47,9 @@ public class LoginServlet extends HttpServlet {
             usernameCookie.setMaxAge(60 * 60 * 24 * 7); // Persistent cookie: Lasts for 7 days
             response.addCookie(usernameCookie);
             
-            response.sendRedirect("dashboard");
+            response.sendRedirect("feed");
         } else {
-            request.setAttribute("error", "Invalid username or password");
+            request.setAttribute("error", "Invalid email or password");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }

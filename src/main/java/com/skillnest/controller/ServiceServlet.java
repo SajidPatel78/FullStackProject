@@ -1,7 +1,7 @@
 package com.skillnest.controller;
 
-import com.skillnest.dao.ServiceDAO;
-import com.skillnest.model.Service;
+import com.skillnest.dao.PostDAO;
+import com.skillnest.model.Post;
 import com.skillnest.model.User;
 
 import javax.servlet.ServletException;
@@ -16,54 +16,30 @@ import java.util.List;
 @WebServlet("/services")
 public class ServiceServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private ServiceDAO serviceDAO;
+    private PostDAO postDAO;
 
     public void init() {
-        serviceDAO = new ServiceDAO();
+        postDAO = new PostDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
             
-        List<Service> allServices = serviceDAO.getAllServices();
-        request.setAttribute("services", allServices);
-        request.getRequestDispatcher("view-services.jsp").forward(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-            
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect("login");
-            return;
+        int currentUserId = -1;
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            currentUserId = user.getId();
         }
-
-        User user = (User) session.getAttribute("user");
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
-        String priceStr = request.getParameter("price");
-
-        double price = 0.0;
-        try {
-            price = Double.parseDouble(priceStr);
-        } catch (NumberFormatException e) {
-            request.setAttribute("error", "Invalid price format");
-            request.getRequestDispatcher("add-service.jsp").forward(request, response);
-            return;
-        }
-
-        Service service = new Service();
-        service.setTitle(title);
-        service.setDescription(description);
-        service.setPrice(price);
-        service.setUserId(user.getId());
-
-        if (serviceDAO.addService(service)) {
-            response.sendRedirect("dashboard?serviceAdded=true");
-        } else {
-            request.setAttribute("error", "Failed to add service. Try again.");
-            request.getRequestDispatcher("add-service.jsp").forward(request, response);
-        }
+            
+        String category = request.getParameter("category");
+        String searchQuery = request.getParameter("searchQuery");
+        
+        List<Post> allServices = postDAO.getPostsByFilter(currentUserId, "SERVICE", category, searchQuery);
+        request.setAttribute("services", allServices);
+        request.setAttribute("queryCategory", category);
+        request.setAttribute("querySearch", searchQuery);
+        
+        request.getRequestDispatcher("view-services.jsp").forward(request, response);
     }
 }

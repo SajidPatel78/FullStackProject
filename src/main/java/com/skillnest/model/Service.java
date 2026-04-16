@@ -12,6 +12,11 @@ public class Service {
     
     // Additional field for display purposes (join query)
     private String username; 
+    
+    // Additional fields for reviews and bookings
+    private double averageRating;
+    private boolean bookedByCurrentUser;
+    private boolean reviewedByCurrentUser;
 
     public Service() {
     }
@@ -79,5 +84,29 @@ public class Service {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public boolean isBookedByCurrentUser() {
+        return bookedByCurrentUser;
+    }
+
+    public void setBookedByCurrentUser(boolean bookedByCurrentUser) {
+        this.bookedByCurrentUser = bookedByCurrentUser;
+    }
+
+    public boolean isReviewedByCurrentUser() {
+        return reviewedByCurrentUser;
+    }
+
+    public void setReviewedByCurrentUser(boolean reviewedByCurrentUser) {
+        this.reviewedByCurrentUser = reviewedByCurrentUser;
     }
 }

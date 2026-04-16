@@ -31,13 +31,26 @@ public class ServiceDAO {
         return false;
     }
 
-    public List<Service> getAllServices() {
+    public List<Service> getAllServices(int currentUserId) {
         List<Service> services = new ArrayList<>();
-        String query = "SELECT s.*, u.username FROM services s INNER JOIN users u ON s.user_id = u.id ORDER BY s.created_at DESC";
+        String query = "SELECT s.*, u.username, " +
+                       "IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating, " +
+                       "MAX(CASE WHEN b.user_id = ? THEN 1 ELSE 0 END) AS has_booked, " +
+                       "MAX(CASE WHEN cur_r.user_id = ? THEN 1 ELSE 0 END) AS has_reviewed " +
+                       "FROM services s " +
+                       "INNER JOIN users u ON s.user_id = u.id " +
+                       "LEFT JOIN reviews r ON s.id = r.service_id " +
+                       "LEFT JOIN bookings b ON s.id = b.service_id " +
+                       "LEFT JOIN reviews cur_r ON s.id = cur_r.service_id " +
+                       "GROUP BY s.id, u.username " +
+                       "ORDER BY s.created_at DESC";
         
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
              
+            preparedStatement.setInt(1, currentUserId);
+            preparedStatement.setInt(2, currentUserId);
+            
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 Service service = new Service();
@@ -48,6 +61,10 @@ public class ServiceDAO {
                 service.setUserId(rs.getInt("user_id"));
                 service.setCreatedAt(rs.getTimestamp("created_at"));
                 service.setUsername(rs.getString("username"));
+                
+                service.setAverageRating(rs.getDouble("avg_rating"));
+                service.setBookedByCurrentUser(rs.getInt("has_booked") == 1);
+                service.setReviewedByCurrentUser(rs.getInt("has_reviewed") == 1);
                 
                 services.add(service);
             }
@@ -60,7 +77,12 @@ public class ServiceDAO {
 
     public List<Service> getServicesByUserId(int userId) {
         List<Service> services = new ArrayList<>();
-        String query = "SELECT * FROM services WHERE user_id = ? ORDER BY created_at DESC";
+        String query = "SELECT s.*, IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating " +
+                       "FROM services s " +
+                       "LEFT JOIN reviews r ON s.id = r.service_id " +
+                       "WHERE s.user_id = ? " +
+                       "GROUP BY s.id " +
+                       "ORDER BY s.created_at DESC";
         
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -75,6 +97,7 @@ public class ServiceDAO {
                 service.setPrice(rs.getDouble("price"));
                 service.setUserId(rs.getInt("user_id"));
                 service.setCreatedAt(rs.getTimestamp("created_at"));
+                service.setAverageRating(rs.getDouble("avg_rating"));
                 
                 services.add(service);
             }

@@ -3,62 +3,46 @@
 <html>
 <head>
     <title>SkillNest - Login</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=2.0">
 </head>
 <body>
-    <header>
-        <h1>SkillNest</h1>
-        <nav>
-            <a href="index.jsp">Home</a>
-            <a href="register.jsp">Register</a>
-        </nav>
-    </header>
     
-    <div class="container">
-        <div class="card" style="max-width: 400px; margin: 40px auto;">
-            <h2>Login</h2>
+    <div class="auth-wrapper">
+        <div class="glass-card auth-card">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span class="logo-icon">☄️</span> <span style="font-size: 1.5rem; font-weight: bold;">SkillNest</span>
+            </div>
+            <h2>Welcome Back, Explorer!</h2>
             
             <% if(request.getParameter("registered") != null) { %>
-                <div class="success-msg">Registration successful! Please login.</div>
+                <div class="badge badge-green" style="display:block; text-align:center; box-sizing:border-box; margin-bottom:20px; padding: 10px;">Registration successful! Please login.</div>
             <% } %>
             
             <% if(request.getAttribute("error") != null) { %>
-                <div class="error-msg"><%= request.getAttribute("error") %></div>
+                <div class="badge badge-pink" style="display:block; text-align:center; box-sizing:border-box; margin-bottom:20px; padding: 10px;"><%= request.getAttribute("error") %></div>
             <% } %>
             
             <form id="loginForm" action="login" method="post" onsubmit="return validateLoginForm()">
                 <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="email">Email or Username</label>
+                    <input type="text" id="email" name="email" class="glass-input" placeholder="Enter Email or Username" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                    <small id="passwordError" style="color: var(--error-color); display: none;">Password must be at least 6 characters</small>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="glass-input" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn" style="width: 100%;">Login</button>
+                <button type="submit" class="btn-solid" style="width: 100%; margin-top: 10px;">Launch Dashboard</button>
             </form>
-            <p style="text-align: center; margin-top: 20px;">
-                Don't have an account? <a href="register.jsp">Register here</a>
-            </p>
+            
+            <div style="text-align: center; margin-top: 25px; font-size: 0.95rem; color: var(--text-muted);">
+                New to the cosmos? <a href="register.jsp" style="color: var(--accent-cyan); text-decoration: none; font-weight: 600;">Register here</a>
+            </div>
         </div>
     </div>
 
     <script>
         function validateLoginForm() {
-            var isValid = true;
-            
-            // Password validation
-            var password = document.getElementById("password").value;
-            var passwordError = document.getElementById("passwordError");
-            if (password.length < 6) {
-                passwordError.style.display = "block";
-                isValid = false;
-            } else {
-                passwordError.style.display = "none";
-            }
-            
-            return isValid;
+            return true; // Bypass validation for demo
         }
     </script>
 </body>

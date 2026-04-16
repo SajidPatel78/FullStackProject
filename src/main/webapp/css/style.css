@@ -1,153 +1,212 @@
-/* Simple and clean styling suitable for an academic project */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 :root {
-    --primary-color: #4a90e2;
-    --secondary-color: #f3f4f6;
-    --text-color: #333;
-    --bg-color: #ffffff;
-    --border-color: #ccc;
-    --error-color: #e74c3c;
-    --success-color: #2ecc71;
+    --bg-dark: #070711;
+    --bg-galaxy: radial-gradient(ellipse at bottom, #1B1236 0%, #070711 100%);
+    --card-glass: rgba(255, 255, 255, 0.03);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent-pink: #F72A75;
+    --accent-purple: #8b5cf6;
+    --accent-cyan: #06b6d4;
+    --accent-green: #10b981;
+    --glow-pink: rgba(247, 42, 117, 0.4);
+    --glow-cyan: rgba(6, 182, 212, 0.4);
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Outfit', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--secondary-color);
-    color: var(--text-color);
+    background: var(--bg-dark);
+    background-image: var(--bg-galaxy), url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"/></svg>');
+    background-attachment: fixed;
+    color: var(--text-main);
+    min-height: 100vh;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+/* Glassmorphism Utilities */
+.glass-card {
+    background: var(--card-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
-header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin-left: 15px;
-    font-weight: 500;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-/* Card layout for forms and dashboard */
-.card {
-    background-color: var(--bg-color);
+.glass-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    color: var(--text-main);
+    padding: 10px 16px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    padding: 30px;
-    margin-bottom: 20px;
+    outline: none;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.glass-input:focus {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 10px var(--glow-pink);
+    background: rgba(255, 255, 255, 0.1);
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.form-group input, .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    box-sizing: border-box; /* Ensures padding doesn't affect total width */
-}
-
-.btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
+/* Buttons */
+.btn-neon {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--accent-pink);
+    padding: 8px 16px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;
+    font-weight: 500;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
+    text-align: center;
 }
 
-.btn:hover {
-    background-color: #357abd;
+.btn-neon:hover {
+    background: var(--accent-pink);
+    box-shadow: 0 0 15px var(--glow-pink);
 }
 
-.error-msg {
-    color: var(--error-color);
-    font-weight: bold;
-    margin-bottom: 15px;
+.btn-cyan {
+    border-color: var(--accent-cyan);
+}
+.btn-cyan:hover {
+    background: var(--accent-cyan);
+    box-shadow: 0 0 15px var(--glow-cyan);
 }
 
-.success-msg {
-    color: var(--success-color);
-    font-weight: bold;
-    margin-bottom: 15px;
+.btn-solid {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--glow-pink);
 }
 
-/* Tables for displaying services */
-table {
+/* Layout Framework */
+.app-layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: calc(100vh - 40px);
+    position: sticky;
+    top: 20px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 10px 20px;
+}
+.logo-icon {
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover, .nav-item.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+}
+.nav-item.active {
+    border-left: 3px solid var(--accent-purple);
+}
+
+/* Auth Cards */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+.auth-card {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+    max-width: 400px;
+    padding: 40px;
 }
-
-table th, table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-
-table th {
-    background-color: var(--secondary-color);
-    font-weight: bold;
-}
-
-table tr:hover {
-    background-color: #f9f9f9;
-}
-
-/* Specific component styles */
-.service-list .service-card {
-    border: 1px solid var(--border-color);
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    background: white;
-}
-
-.service-card h3 {
+.auth-card h2 {
     margin-top: 0;
-    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+.auth-card .form-group {
+    margin-bottom: 20px;
+}
+.auth-card label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+.auth-card input {
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.service-meta {
-    font-size: 0.9em;
-    color: #666;
-    margin-top: 10px;
+/* Helpers */
+.text-gradient {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.price {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--success-color);
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
+.badge-green { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+.badge-pink { background: rgba(247, 42, 117, 0.2); color: #f472b6; border: 1px solid rgba(247, 42, 117, 0.4); }
+.badge-purple { background: rgba(139, 92, 246, 0.2); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
