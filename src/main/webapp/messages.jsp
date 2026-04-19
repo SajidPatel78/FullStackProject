@@ -4,93 +4,55 @@
 <html>
 <head>
     <title>SkillNest - Messages</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=3.0">
     <style>
-        .chat-container {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            height: 60vh;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-        .chat-history {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            border-bottom: 1px solid #eee;
-        }
-        .chat-message {
-            margin-bottom: 15px;
-            max-width: 80%;
-        }
-        .chat-message.sent {
-            margin-left: auto;
-            text-align: right;
-        }
-        .chat-message.received {
-            margin-right: auto;
-            text-align: left;
-        }
-        .message-content {
-            padding: 10px 15px;
-            border-radius: 20px;
-            display: inline-block;
-        }
-        .sent .message-content {
-            background: var(--primary-color);
-            color: white;
-            border-bottom-right-radius: 5px;
-        }
-        .received .message-content {
-            background: #f1f0f0;
-            color: #333;
-            border-bottom-left-radius: 5px;
-        }
-        .message-meta {
-            font-size: 0.75em;
-            color: #888;
-            margin-top: 5px;
-        }
-        .chat-input {
-            padding: 20px;
-            display: flex;
-            gap: 10px;
-        }
+        .msg-page { max-width: 700px; margin: 0 auto; padding: 30px 20px; }
+        .back-nav a { color: var(--text-muted); text-decoration: none; font-weight: 500; }
+        .back-nav a:hover { color: white; }
+        
+        .chat-box { display: flex; flex-direction: column; height: 65vh; }
+        .chat-history { flex: 1; padding: 20px; overflow-y: auto; }
+        .chat-history::-webkit-scrollbar { width: 4px; }
+        .chat-history::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        
+        .chat-msg { margin-bottom: 15px; max-width: 80%; }
+        .chat-msg.sent { margin-left: auto; text-align: right; }
+        .chat-msg.received { margin-right: auto; text-align: left; }
+        .msg-bubble { padding: 10px 16px; border-radius: 16px; display: inline-block; font-size: 0.95rem; line-height: 1.4; }
+        .sent .msg-bubble { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); color: white; border-bottom-right-radius: 4px; }
+        .received .msg-bubble { background: rgba(255,255,255,0.08); color: var(--text-main); border-bottom-left-radius: 4px; }
+        .msg-meta { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
+        
+        .chat-input { padding: 15px; display: flex; gap: 10px; border-top: 1px solid var(--card-border); }
+        .chat-input .glass-input { flex: 1; border-radius: 20px; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>SkillNest</h1>
-        <nav>
-            <a href="feed">Feed</a>
-            <a href="profile">Profile</a>
-            <a href="logout">Logout</a>
-        </nav>
-    </header>
-    
-    <div class="container">
-        <h2 style="text-align: center;">Conversation</h2>
+    <div class="msg-page">
+        <div class="back-nav" style="margin-bottom:20px;">
+            <a href="feed">← Back to Feed</a>
+        </div>
+        
+        <h2 style="text-align:center; margin-bottom:20px;">💬 Conversation</h2>
+        
         <c:choose>
             <c:when test="${empty toUserId}">
-                <div class="card" style="text-align: center;">
+                <div class="glass-card" style="text-align: center; padding: 40px; color: var(--text-muted);">
                     <p>Select a user from a post to start a conversation.</p>
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="chat-container">
+                <div class="glass-card chat-box">
                     <div class="chat-history" id="chatHistory">
                         <c:choose>
                             <c:when test="${empty conversation}">
-                                <p style="text-align: center; color: #888; padding-top: 50px;">No messages yet. Say hi!</p>
+                                <p style="text-align: center; color: var(--text-muted); padding-top: 50px;">No messages yet. Say hi! 👋</p>
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="msg" items="${conversation}">
-                                    <div class="chat-message ${msg.senderId == sessionScope.user.id ? 'sent' : 'received'}">
-                                        <div class="message-content">${msg.content}</div>
-                                        <div class="message-meta">${msg.senderName} • ${msg.createdAt}</div>
+                                    <div class="chat-msg ${msg.senderId == sessionScope.user.id ? 'sent' : 'received'}">
+                                        <div class="msg-bubble">${msg.content}</div>
+                                        <div class="msg-meta">${msg.senderName} • ${msg.createdAt}</div>
                                     </div>
                                 </c:forEach>
                             </c:otherwise>
@@ -99,8 +61,8 @@
                     
                     <form class="chat-input" action="messages" method="post">
                         <input type="hidden" name="toUserId" value="${toUserId}">
-                        <input type="text" name="content" required placeholder="Type a message..." value="${param.context}" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 20px;">
-                        <button type="submit" class="btn" style="border-radius: 20px; padding: 10px 20px;">Send</button>
+                        <input type="text" name="content" class="glass-input" required placeholder="Type a message..." value="${param.context}">
+                        <button type="submit" class="btn-solid" style="border-radius: 20px; padding: 10px 20px;">Send</button>
                     </form>
                 </div>
             </c:otherwise>
@@ -108,11 +70,8 @@
     </div>
     
     <script>
-        // Scroll to bottom of chat automatically
         var chatHistory = document.getElementById("chatHistory");
-        if (chatHistory) {
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
+        if (chatHistory) { chatHistory.scrollTop = chatHistory.scrollHeight; }
     </script>
 </body>
 </html>

@@ -8,8 +8,9 @@ public class User {
     private String email;
     private String password;
     private Timestamp createdAt;
-
     private String collegeName;
+    private int xp;
+    private int level;
 
     public User() {
     }
@@ -69,5 +70,29 @@ public class User {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    /**
+     * Calculate level based on XP.
+     * Every 500 XP = 1 level up.
+     */
+    public static int calculateLevel(int xp) {
+        return 1 + (xp / 500);
     }
 }

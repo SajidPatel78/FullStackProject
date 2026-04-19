@@ -7,8 +7,43 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
+
+    // Helper to safely extract xp/level (handles missing columns gracefully)
+    private void populateUserFromRS(User user, ResultSet rs) throws SQLException {
+        user.setId(rs.getInt("id"));
+        user.setUsername(rs.getString("username"));
+        user.setEmail(rs.getString("email"));
+        user.setPassword(rs.getString("password"));
+        user.setCollegeName(rs.getString("college_name"));
+        user.setCreatedAt(rs.getTimestamp("created_at"));
+        try {
+            user.setXp(rs.getInt("xp"));
+            user.setLevel(rs.getInt("level"));
+        } catch (SQLException e) {
+            // xp/level columns may not exist yet, default to 0/1
+            user.setXp(0);
+            user.setLevel(1);
+        }
+    }
+
+    /**
+     * Auto-migrate: adds missing columns to the users table.
+     */
+    private void autoMigrate() {
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement()) {
+            try { stmt.executeUpdate("ALTER TABLE users ADD COLUMN college_name VARCHAR(100) NOT NULL DEFAULT 'Demo College'"); } catch (SQLException e) { /* already exists */ }
+            try { stmt.executeUpdate("ALTER TABLE users ADD COLUMN xp INT DEFAULT 0"); } catch (SQLException e) { /* already exists */ }
+            try { stmt.executeUpdate("ALTER TABLE users ADD COLUMN level INT DEFAULT 1"); } catch (SQLException e) { /* already exists */ }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean checkUserExists(String username, String email) {
         String query = "SELECT COUNT(*) FROM users WHERE username = ? OR email = ?";
@@ -29,7 +64,7 @@ public class UserDAO {
     }
 
     public boolean registerUser(User user) {
-        String query = "INSERT INTO users (username, email, password, college_name) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO users (username, email, password, college_name, xp, level) VALUES (?, ?, ?, ?, 0, 1)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
              
@@ -42,13 +77,16 @@ public class UserDAO {
             return result > 0;
             
         } catch (SQLException e) {
-            // Auto-migration: if the database schema is outdated and missing college_name
-            if (e.getMessage() != null && e.getMessage().contains("Unknown column 'college_name'")) {
-                try (Connection conn = DBConnection.getConnection();
-                     java.sql.Statement stmt = conn.createStatement()) {
-                    stmt.executeUpdate("ALTER TABLE users ADD COLUMN college_name VARCHAR(100) NOT NULL DEFAULT 'Demo College'");
-                    // Retry registration after patching the schema
-                    return registerUser(user);
+            if (e.getMessage() != null && e.getMessage().contains("Unknown column")) {
+                autoMigrate();
+                // Retry with simpler query
+                try (Connection conn2 = DBConnection.getConnection();
+                     PreparedStatement ps2 = conn2.prepareStatement("INSERT INTO users (username, email, password, college_name) VALUES (?, ?, ?, ?)")) {
+                    ps2.setString(1, user.getUsername());
+                    ps2.setString(2, user.getEmail());
+                    ps2.setString(3, user.getPassword());
+                    ps2.setString(4, user.getCollegeName());
+                    return ps2.executeUpdate() > 0;
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -70,12 +108,7 @@ public class UserDAO {
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
-                user.setCollegeName(rs.getString("college_name"));
-                user.setCreatedAt(rs.getTimestamp("created_at"));
+                populateUserFromRS(user, rs);
                 return user;
             } else {
                 // Demo Mode: Auto-register user if not found
@@ -85,35 +118,29 @@ public class UserDAO {
                 
                 if (identifier != null && identifier.contains("@")) {
                     newUser.setEmail(identifier);
-                    newUser.setUsername(baseUsername + "_" + timestamp); // Avoid unique constraint on derived username
+                    newUser.setUsername(baseUsername + "_" + timestamp);
                 } else {
-                    newUser.setEmail(baseUsername + "_" + timestamp + "@demo.com"); // Avoid unique constraint on derived email
+                    newUser.setEmail(baseUsername + "_" + timestamp + "@demo.com");
                     newUser.setUsername(baseUsername);
                 }
                 
                 newUser.setPassword(password != null && !password.isEmpty() ? password : "password");
                 newUser.setCollegeName("Demo College");
                 
-                // If register fails (e.g. username taken), try fallback with timestamp
                 if (!registerUser(newUser)) {
                     newUser.setUsername(baseUsername + "_" + timestamp);
                     newUser.setEmail(baseUsername + "_" + timestamp + "@demo.com");
                     registerUser(newUser);
                 }
                 
-                // Now query again directly by the email we just set
+                // Fetch the newly created user
                 String fallbackQuery = "SELECT * FROM users WHERE email = ?";
                 try (PreparedStatement fallbackStmt = connection.prepareStatement(fallbackQuery)) {
                     fallbackStmt.setString(1, newUser.getEmail());
                     ResultSet fallbackRs = fallbackStmt.executeQuery();
                     if (fallbackRs.next()) {
                         User registeredUser = new User();
-                        registeredUser.setId(fallbackRs.getInt("id"));
-                        registeredUser.setUsername(fallbackRs.getString("username"));
-                        registeredUser.setEmail(fallbackRs.getString("email"));
-                        registeredUser.setPassword(fallbackRs.getString("password"));
-                        registeredUser.setCollegeName(fallbackRs.getString("college_name"));
-                        registeredUser.setCreatedAt(fallbackRs.getTimestamp("created_at"));
+                        populateUserFromRS(registeredUser, fallbackRs);
                         return registeredUser;
                     }
                 }
@@ -123,5 +150,113 @@ public class UserDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Add XP to a user and recalculate their level.
+     */
+    public void addXP(int userId, int xpAmount) {
+        String query = "UPDATE users SET xp = xp + ?, level = GREATEST(1, FLOOR((xp + ?) / 500) + 1) WHERE id = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, xpAmount);
+            ps.setInt(2, xpAmount);
+            ps.setInt(3, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            if (e.getMessage() != null && e.getMessage().contains("Unknown column")) {
+                autoMigrate();
+                addXP(userId, xpAmount); // retry
+            } else {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Get the top N users by XP for the leaderboard.
+     */
+    public List<User> getTopUsersByXP(int limit) {
+        List<User> topUsers = new ArrayList<>();
+        String query = "SELECT * FROM users ORDER BY xp DESC LIMIT ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, limit);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                populateUserFromRS(user, rs);
+                topUsers.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return topUsers;
+    }
+
+    /**
+     * Fetch a fresh copy of a user by ID (for refreshing session after XP changes).
+     */
+    public User getUserById(int userId) {
+        String query = "SELECT * FROM users WHERE id = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                populateUserFromRS(user, rs);
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Get suggested users (users from same college, not self, not already connected).
+     */
+    public List<User> getSuggestedUsers(int userId, String collegeName, int limit) {
+        List<User> suggestions = new ArrayList<>();
+        String query = "SELECT u.* FROM users u " +
+                       "WHERE u.id != ? " +
+                       "AND u.id NOT IN (SELECT following_id FROM connections WHERE follower_id = ?) " +
+                       "ORDER BY CASE WHEN u.college_name = ? THEN 0 ELSE 1 END, u.xp DESC " +
+                       "LIMIT ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, userId);
+            ps.setString(3, collegeName);
+            ps.setInt(4, limit);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                populateUserFromRS(user, rs);
+                suggestions.add(user);
+            }
+        } catch (SQLException e) {
+            // connections table might not exist yet — return empty
+            e.printStackTrace();
+        }
+        return suggestions;
+    }
+
+    /**
+     * Get the connection count for a user.
+     */
+    public int getConnectionCount(int userId) {
+        String query = "SELECT COUNT(*) FROM connections WHERE follower_id = ? OR following_id = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            // table might not exist
+        }
+        return 0;
     }
 }

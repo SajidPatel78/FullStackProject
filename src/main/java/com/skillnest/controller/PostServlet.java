@@ -1,6 +1,8 @@
 package com.skillnest.controller;
 
 import com.skillnest.dao.PostDAO;
+import com.skillnest.dao.UserDAO;
+import com.skillnest.dao.ChallengeDAO;
 import com.skillnest.model.Post;
 import com.skillnest.model.User;
 
@@ -16,9 +18,13 @@ import java.io.IOException;
 public class PostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private PostDAO postDAO;
+    private UserDAO userDAO;
+    private ChallengeDAO challengeDAO;
 
     public void init() {
         postDAO = new PostDAO();
+        userDAO = new UserDAO();
+        challengeDAO = new ChallengeDAO();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -57,6 +63,13 @@ public class PostServlet extends HttpServlet {
         post.setUserId(user.getId());
 
         if (postDAO.addPost(post)) {
+            // Award XP for creating a post
+            userDAO.addXP(user.getId(), 50);
+            // Update skill progress based on category
+            challengeDAO.updateSkillProgress(user.getId(), category, 5);
+            // Refresh session user
+            User refreshed = userDAO.getUserById(user.getId());
+            if (refreshed != null) session.setAttribute("user", refreshed);
             response.sendRedirect("profile?postAdded=true");
         } else {
             request.setAttribute("error", "Failed to add post. Try again.");

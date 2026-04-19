@@ -1,6 +1,7 @@
 package com.skillnest.controller;
 
 import com.skillnest.dao.InteractionDAO;
+import com.skillnest.dao.UserDAO;
 import com.skillnest.model.User;
 
 import javax.servlet.ServletException;
@@ -15,9 +16,11 @@ import java.io.IOException;
 public class InteractionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private InteractionDAO interactionDAO;
+    private UserDAO userDAO;
 
     public void init() {
         interactionDAO = new InteractionDAO();
+        userDAO = new UserDAO();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -45,12 +48,14 @@ public class InteractionServlet extends HttpServlet {
                 switch (action) {
                     case "like":
                         interactionDAO.addLike(postId, user.getId());
+                        userDAO.addXP(user.getId(), 5);
                         break;
                     case "unlike":
                         interactionDAO.removeLike(postId, user.getId());
                         break;
                     case "save":
                         interactionDAO.addSave(postId, user.getId());
+                        userDAO.addXP(user.getId(), 3);
                         break;
                     case "unsave":
                         interactionDAO.removeSave(postId, user.getId());
@@ -60,6 +65,10 @@ public class InteractionServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
+        
+        // Refresh session with latest XP
+        User refreshed = userDAO.getUserById(user.getId());
+        if (refreshed != null) session.setAttribute("user", refreshed);
         
         response.sendRedirect(returnUrl);
     }

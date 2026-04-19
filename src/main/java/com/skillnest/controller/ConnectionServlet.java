@@ -1,8 +1,7 @@
 package com.skillnest.controller;
 
-import com.skillnest.dao.BookingDAO;
+import com.skillnest.dao.ConnectionDAO;
 import com.skillnest.dao.UserDAO;
-import com.skillnest.model.Booking;
 import com.skillnest.model.User;
 
 import javax.servlet.ServletException;
@@ -13,20 +12,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/book")
-public class BookingServlet extends HttpServlet {
+@WebServlet("/connect")
+public class ConnectionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private BookingDAO bookingDAO;
+    private ConnectionDAO connectionDAO;
     private UserDAO userDAO;
 
     public void init() {
-        bookingDAO = new BookingDAO();
+        connectionDAO = new ConnectionDAO();
         userDAO = new UserDAO();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect("login.jsp");
@@ -34,28 +33,28 @@ public class BookingServlet extends HttpServlet {
         }
 
         User user = (User) session.getAttribute("user");
-        String serviceIdStr = request.getParameter("serviceId");
+        String targetIdStr = request.getParameter("targetUserId");
+        String action = request.getParameter("action");
 
-        if (serviceIdStr != null && !serviceIdStr.isEmpty()) {
+        if (targetIdStr != null && !targetIdStr.isEmpty()) {
             try {
-                int serviceId = Integer.parseInt(serviceIdStr);
-                
-                // Check if already booked
-                if (!bookingDAO.hasUserBookedService(user.getId(), serviceId)) {
-                    Booking booking = new Booking();
-                    booking.setServiceId(serviceId);
-                    booking.setUserId(user.getId());
-                    bookingDAO.addBooking(booking);
-                    // Award XP for booking a service
-                    userDAO.addXP(user.getId(), 30);
+                int targetId = Integer.parseInt(targetIdStr);
+
+                if ("connect".equals(action)) {
+                    connectionDAO.addConnection(user.getId(), targetId);
+                    // Award XP for making a connection
+                    userDAO.addXP(user.getId(), 10);
+                    // Refresh session user data
                     User refreshed = userDAO.getUserById(user.getId());
                     if (refreshed != null) session.setAttribute("user", refreshed);
+                } else if ("disconnect".equals(action)) {
+                    connectionDAO.removeConnection(user.getId(), targetId);
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
-        
-        response.sendRedirect("services");
+
+        response.sendRedirect("feed");
     }
 }
