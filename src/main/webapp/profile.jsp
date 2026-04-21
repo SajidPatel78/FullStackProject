@@ -30,6 +30,7 @@
         .back-nav a { color: var(--text-muted); text-decoration: none; font-weight: 500; }
         .back-nav a:hover { color: white; }
     </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="profile-page">
@@ -78,7 +79,7 @@
                 <c:otherwise>
                     <c:forEach var="post" items="${myPosts}">
                         <div class="glass-card port-card" style="position:relative;">
-                            <span class="badge ${post.postType == 'SERVICE' ? 'badge-green' : 'badge-purple'}" style="position:absolute; top:20px; right:20px;">
+                            <span class="badge ${post.postType == 'GIG' ? 'badge-green' : 'badge-purple'}" style="position:absolute; top:20px; right:20px;">
                                 ${post.postType}
                             </span>
                             <h4>${post.title}</h4>
@@ -86,13 +87,13 @@
                             <p>${post.description}</p>
                             <div class="port-meta">
                                 <c:choose>
-                                    <c:when test="${post.postType == 'SERVICE'}">
+                                    <c:when test="${post.postType == 'GIG'}">
                                         <span style="font-weight: 700; color: var(--accent-green); font-size: 1.1rem;">$${post.price}</span>
-                                        <span style="color: #d97706;">⭐ ${post.averageRating > 0 ? post.averageRating : 'New'}</span>
+                                        <span style="color: #d97706;"><i class="fa-solid fa-star"></i> ${post.averageRating > 0 ? post.averageRating : 'New'}</span>
                                     </c:when>
                                     <c:otherwise>
                                         <span style="color: var(--text-muted); font-size: 0.85rem;">${post.createdAt}</span>
-                                        <span style="color: var(--accent-pink);">❤️ ${post.likesCount}</span>
+                                        <span style="color: var(--accent-pink);"><i class="fa-solid fa-heart" style="color: #e23670;"></i> ${post.likesCount}</span>
                                     </c:otherwise>
                                 </c:choose>
                             </div>

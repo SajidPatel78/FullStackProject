@@ -211,6 +211,7 @@
         .cookie-info.visible { display: block; }
         .cookie-info strong { color: var(--text-main); }
     </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="orb orb-1"></div>
@@ -222,7 +223,7 @@
             <!-- Logo -->
             <div class="auth-logo">
                 <a href="index.jsp" style="text-decoration:none; color: inherit;">
-                    <span class="logo-icon">☄️</span>
+                    <span class="logo-icon"><i class="fa-solid fa-meteor"></i></span>
                     <span class="logo-text">SkillNest</span>
                 </a>
             </div>
@@ -236,7 +237,7 @@
                 <div class="alert alert-success">🎉 Registration successful! Please log in.</div>
             <% } %>
             <% if(request.getAttribute("error") != null) { %>
-                <div class="alert alert-error">⚠️ <%= request.getAttribute("error") %></div>
+                <div class="alert alert-error"><i class="fa-solid fa-triangle-exclamation"></i> <%= request.getAttribute("error") %></div>
             <% } %>
 
             <!-- Login Form -->
@@ -276,7 +277,7 @@
                 </div>
 
                 <button type="submit" class="btn-solid btn-login" id="loginBtn">
-                    🚀 Sign In
+                    <i class="fa-solid fa-rocket"></i> Sign In
                 </button>
             </form>
 

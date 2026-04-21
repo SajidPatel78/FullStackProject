@@ -223,6 +223,7 @@
         .skill-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
         .skill-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)); transition: width 0.8s ease; }
     </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="challenges-page">
@@ -230,7 +231,7 @@
         <!-- Page Header -->
         <div class="page-header">
             <a href="feed">← Back to Feed</a>
-            <h1>⚡ Daily <span class="text-gradient">Challenges</span></h1>
+            <h1><i class="fa-solid fa-bolt"></i> Daily <span class="text-gradient">Challenges</span></h1>
             <div style="width: 120px;"></div>
         </div>
 
@@ -253,7 +254,7 @@
         </div>
 
         <!-- Today's Challenge -->
-        <div class="section-label">🔥 Today's Challenge <span class="count">Active</span></div>
+        <div class="section-label"><i class="fa-solid fa-fire"></i> Today's Challenge <span class="count">Active</span></div>
 
         <div class="challenge-grid">
             <c:choose>
@@ -261,15 +262,15 @@
                     <div class="glass-card challenge-card ${challengeCompleted ? 'completed' : ''}">
                         <div class="challenge-top">
                             <span class="challenge-category">${todayChallenge.category}</span>
-                            <span class="challenge-xp">🎁 +${todayChallenge.xpReward} XP</span>
+                            <span class="challenge-xp"><i class="fa-solid fa-gift"></i> +${todayChallenge.xpReward} XP</span>
                         </div>
                         <h3>${todayChallenge.title}</h3>
                         <p>${todayChallenge.description}</p>
-                        <div class="challenge-date">📅 ${todayChallenge.challengeDate}</div>
+                        <div class="challenge-date"><i class="fa-regular fa-calendar-days"></i> ${todayChallenge.challengeDate}</div>
 
                         <c:choose>
                             <c:when test="${challengeCompleted}">
-                                <div class="completed-badge">✅ Challenge Completed — XP Earned!</div>
+                                <div class="completed-badge"><i class="fa-solid fa-circle-check"></i> Challenge Completed — XP Earned!</div>
                             </c:when>
                             <c:when test="${challengeAccepted}">
                                 <div class="challenge-actions">
@@ -280,7 +281,7 @@
                                         <input type="hidden" name="challengeId" value="${todayChallenge.id}">
                                         <input type="hidden" name="action" value="complete">
                                         <input type="hidden" name="returnUrl" value="challenges">
-                                        <button type="submit" class="btn-solid" style="width:100%;">✅ Mark Complete</button>
+                                        <button type="submit" class="btn-solid" style="width:100%;"><i class="fa-solid fa-circle-check"></i> Mark Complete</button>
                                     </form>
                                 </div>
                             </c:when>
@@ -290,7 +291,7 @@
                                         <input type="hidden" name="challengeId" value="${todayChallenge.id}">
                                         <input type="hidden" name="action" value="accept">
                                         <input type="hidden" name="returnUrl" value="challenges">
-                                        <button type="submit" class="btn-solid" style="width:100%;">⚡ Accept Challenge</button>
+                                        <button type="submit" class="btn-solid" style="width:100%;"><i class="fa-solid fa-bolt"></i> Accept Challenge</button>
                                     </form>
                                 </div>
                             </c:otherwise>
@@ -308,7 +309,7 @@
         </div>
 
         <!-- All Available Challenges -->
-        <div class="section-label">📋 All Challenges
+        <div class="section-label"><i class="fa-solid fa-clipboard-list"></i> All Challenges
             <c:if test="${not empty allChallenges}">
                 <span class="count">${allChallenges.size()}</span>
             </c:if>
@@ -321,15 +322,15 @@
                         <div class="glass-card challenge-card ${ch.status == 'COMPLETED' ? 'completed' : ''}">
                             <div class="challenge-top">
                                 <span class="challenge-category">${ch.category}</span>
-                                <span class="challenge-xp">🎁 +${ch.xpReward} XP</span>
+                                <span class="challenge-xp"><i class="fa-solid fa-gift"></i> +${ch.xpReward} XP</span>
                             </div>
                             <h3>${ch.title}</h3>
                             <p>${ch.description}</p>
-                            <div class="challenge-date">📅 ${ch.challengeDate}</div>
+                            <div class="challenge-date"><i class="fa-regular fa-calendar-days"></i> ${ch.challengeDate}</div>
 
                             <c:choose>
                                 <c:when test="${ch.status == 'COMPLETED'}">
-                                    <div class="completed-badge">✅ Completed</div>
+                                    <div class="completed-badge"><i class="fa-solid fa-circle-check"></i> Completed</div>
                                 </c:when>
                                 <c:when test="${ch.status == 'ACCEPTED'}">
                                     <div class="challenge-actions">
@@ -367,7 +368,7 @@
         </div>
 
         <!-- Skill Progress -->
-        <div class="section-label skills-section">📈 Your Skill Progress</div>
+        <div class="section-label skills-section"><i class="fa-solid fa-arrow-trend-up"></i> Your Skill Progress</div>
 
         <c:choose>
             <c:when test="${not empty userSkills}">
@@ -375,11 +376,11 @@
                     <div class="glass-card skill-card">
                         <div class="skill-icon">
                             <c:choose>
-                                <c:when test="${skill.skillName == 'Coding'}">💻</c:when>
-                                <c:when test="${skill.skillName == 'Design'}">🎨</c:when>
-                                <c:when test="${skill.skillName == 'Writing'}">📝</c:when>
-                                <c:when test="${skill.skillName == 'Engineering'}">🔧</c:when>
-                                <c:otherwise>📊</c:otherwise>
+                                <c:when test="${skill.skillName == 'Coding'}"><i class="fa-solid fa-laptop-code"></i></c:when>
+                                <c:when test="${skill.skillName == 'Design'}"><i class="fa-solid fa-palette"></i></c:when>
+                                <c:when test="${skill.skillName == 'Writing'}"><i class="fa-solid fa-file-signature"></i></c:when>
+                                <c:when test="${skill.skillName == 'Engineering'}"><i class="fa-solid fa-wrench"></i></c:when>
+                                <c:otherwise><i class="fa-solid fa-chart-pie"></i></c:otherwise>
                             </c:choose>
                         </div>
                         <div class="skill-info">

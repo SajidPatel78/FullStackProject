@@ -207,6 +207,7 @@
             .rank-stats { gap: 15px; }
         }
     </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="leaderboard-page">
@@ -214,7 +215,7 @@
         <!-- Page Header -->
         <div class="page-header">
             <a href="feed">← Back to Feed</a>
-            <h1>🏆 <span class="text-gradient">Leaderboard</span></h1>
+            <h1><i class="fa-solid fa-trophy"></i> <span class="text-gradient">Leaderboard</span></h1>
             <div style="width: 120px;"></div>
         </div>
 
@@ -276,7 +277,7 @@
 
         <!-- Full Rankings -->
         <div class="rankings-label">
-            📊 Full Rankings
+            <i class="fa-solid fa-chart-pie"></i> Full Rankings
             <c:if test="${not empty leaderboard}">
                 <span class="count">${leaderboard.size()} users</span>
             </c:if>
@@ -315,7 +316,7 @@
             </c:when>
             <c:otherwise>
                 <div class="glass-card empty-state">
-                    <div class="empty-state-icon">🏆</div>
+                    <div class="empty-state-icon"><i class="fa-solid fa-trophy"></i></div>
                     <h3>No Rankings Yet</h3>
                     <p>Start earning XP to be the first on the leaderboard!</p>
                 </div>

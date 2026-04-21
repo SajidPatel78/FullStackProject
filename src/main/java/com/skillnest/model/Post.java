@@ -19,6 +19,7 @@ public class Post {
     
     // Aggregates
     private double averageRating;
+    private int reviewCount;
     private boolean bookedByCurrentUser;
     private boolean reviewedByCurrentUser;
     private int likesCount;
@@ -62,6 +63,9 @@ public class Post {
 
     public double getAverageRating() { return averageRating; }
     public void setAverageRating(double averageRating) { this.averageRating = averageRating; }
+
+    public int getReviewCount() { return reviewCount; }
+    public void setReviewCount(int reviewCount) { this.reviewCount = reviewCount; }
 
     public boolean isBookedByCurrentUser() { return bookedByCurrentUser; }
     public void setBookedByCurrentUser(boolean bookedByCurrentUser) { this.bookedByCurrentUser = bookedByCurrentUser; }

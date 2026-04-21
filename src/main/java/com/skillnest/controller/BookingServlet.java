@@ -56,6 +56,14 @@ public class BookingServlet extends HttpServlet {
             }
         }
         
-        response.sendRedirect("services");
+        String returnUrl = request.getParameter("returnUrl");
+        if (returnUrl != null && !returnUrl.isEmpty()
+                && !returnUrl.contains("://")     // no absolute URLs
+                && !returnUrl.startsWith("//")) { // no protocol-relative URLs
+            response.sendRedirect(returnUrl);
+        } else {
+            response.sendRedirect("gigs");
+        }
     }
 }
+

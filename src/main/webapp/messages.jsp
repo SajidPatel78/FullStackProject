@@ -26,6 +26,7 @@
         .chat-input { padding: 15px; display: flex; gap: 10px; border-top: 1px solid var(--card-border); }
         .chat-input .glass-input { flex: 1; border-radius: 20px; }
     </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="msg-page">
@@ -33,7 +34,7 @@
             <a href="feed">← Back to Feed</a>
         </div>
         
-        <h2 style="text-align:center; margin-bottom:20px;">💬 Conversation</h2>
+        <h2 style="text-align:center; margin-bottom:20px;"><i class="fa-solid fa-comment-dots"></i> Conversation</h2>
         
         <c:choose>
             <c:when test="${empty toUserId}">
@@ -46,7 +47,7 @@
                     <div class="chat-history" id="chatHistory">
                         <c:choose>
                             <c:when test="${empty conversation}">
-                                <p style="text-align: center; color: var(--text-muted); padding-top: 50px;">No messages yet. Say hi! 👋</p>
+                                <p style="text-align: center; color: var(--text-muted); padding-top: 50px;">No messages yet. Say hi! <i class="fa-solid fa-hand"></i></p>
                             </c:when>
                             <c:otherwise>
                                 <c:forEach var="msg" items="${conversation}">

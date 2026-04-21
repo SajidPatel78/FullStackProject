@@ -57,6 +57,13 @@ public class ReviewServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect("services");
+        String returnUrl = request.getParameter("returnUrl");
+        if (returnUrl != null && !returnUrl.isEmpty()
+                && !returnUrl.contains("://")
+                && !returnUrl.startsWith("//")) {
+            response.sendRedirect(returnUrl);
+        } else {
+            response.sendRedirect("gigs");
+        }
     }
 }

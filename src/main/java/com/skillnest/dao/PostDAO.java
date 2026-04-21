@@ -23,7 +23,7 @@ public class PostDAO {
             preparedStatement.setString(3, post.getPostType());
             preparedStatement.setString(4, post.getCategory());
             
-            if (post.getPostType().equals("SERVICE")) {
+            if ("GIG".equals(post.getPostType())) {
                 preparedStatement.setDouble(5, post.getPrice());
             } else {
                 preparedStatement.setNull(5, Types.DECIMAL);
@@ -34,10 +34,14 @@ public class PostDAO {
             return result > 0;
             
         } catch (SQLException e) {
+            System.err.println("[PostDAO.addPost] SQL ERROR: " + e.getMessage()
+                + " | SQLState: " + e.getSQLState()
+                + " | ErrorCode: " + e.getErrorCode());
             e.printStackTrace();
         }
         return false;
     }
+
 
     public List<Post> getFeed(int currentUserId, String userCollege, String postType, String category, String searchQuery, String collegeFilter) {
         List<Post> posts = new ArrayList<>();
@@ -211,6 +215,74 @@ public class PostDAO {
         return posts;
     }
 
+    /**
+     * Fetch a single post/gig by its ID, with all aggregate data.
+     */
+    public Post getPostById(int postId, int currentUserId) {
+        String query = "SELECT p.*, u.username, u.college_name, u.email as user_email, " +
+                       "IFNULL(ROUND(AVG(r.rating), 1), 0) AS avg_rating, " +
+                       "COUNT(DISTINCT r.id) AS review_count, " +
+                       "MAX(CASE WHEN b.user_id = ? THEN 1 ELSE 0 END) AS has_booked, " +
+                       "MAX(CASE WHEN cur_r.user_id = ? THEN 1 ELSE 0 END) AS has_reviewed, " +
+                       "(SELECT COUNT(*) FROM likes WHERE post_id = p.id) AS likes_count, " +
+                       "(SELECT COUNT(*) FROM likes WHERE post_id = p.id AND user_id = ?) AS has_liked, " +
+                       "(SELECT COUNT(*) FROM saved_posts WHERE post_id = p.id AND user_id = ?) AS has_saved " +
+                       "FROM posts p " +
+                       "INNER JOIN users u ON p.user_id = u.id " +
+                       "LEFT JOIN reviews r ON p.id = r.post_id " +
+                       "LEFT JOIN bookings b ON p.id = b.post_id " +
+                       "LEFT JOIN reviews cur_r ON p.id = cur_r.post_id AND cur_r.user_id = ? " +
+                       "WHERE p.id = ? " +
+                       "GROUP BY p.id, u.username, u.college_name, u.email";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, currentUserId);
+            ps.setInt(2, currentUserId);
+            ps.setInt(3, currentUserId);
+            ps.setInt(4, currentUserId);
+            ps.setInt(5, currentUserId);
+            ps.setInt(6, postId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Post post = mapRowToPost(rs);
+                try { post.setReviewCount(rs.getInt("review_count")); } catch (Exception e) {}
+                return post;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Fetch all reviews for a gig/post, newest first,
+     * including the reviewer's username and user level.
+     */
+    public List<java.util.Map<String, Object>> getReviewsForPost(int postId) {
+        List<java.util.Map<String, Object>> reviews = new ArrayList<>();
+        String query = "SELECT r.*, u.username, u.level " +
+                       "FROM reviews r " +
+                       "INNER JOIN users u ON r.user_id = u.id " +
+                       "WHERE r.post_id = ? ORDER BY r.created_at DESC";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, postId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                java.util.Map<String, Object> review = new java.util.HashMap<>();
+                review.put("rating",    rs.getInt("rating"));
+                review.put("comment",   rs.getString("comment"));
+                review.put("username",  rs.getString("username"));
+                review.put("level",     rs.getInt("level"));
+                review.put("createdAt", rs.getTimestamp("created_at"));
+                reviews.add(review);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reviews;
+    }
+
     private Post mapRowToPost(ResultSet rs) throws SQLException {
         Post post = new Post();
         post.setId(rs.getInt("id"));
@@ -238,3 +310,4 @@ public class PostDAO {
         return post;
     }
 }
+

@@ -41,7 +41,7 @@ public class ProfileServlet extends HttpServlet {
         int totalLikes = 0;
         
         for (Post post : myPosts) {
-            if ("SERVICE".equals(post.getPostType())) {
+            if ("GIG".equals(post.getPostType())) {
                 totalServices++;
             }
             totalLikes += post.getLikesCount();

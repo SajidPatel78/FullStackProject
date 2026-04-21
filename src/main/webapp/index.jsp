@@ -293,13 +293,14 @@
             .cta-card h2 { font-size: 1.8rem; }
         }
     </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <!-- ===== NAVIGATION ===== -->
     <nav class="landing-nav" id="mainNav">
         <div class="logo-area" style="padding: 0;">
-            <span class="logo-icon">☄️</span> <span style="font-weight: 700; font-size: 1.5rem;">SkillNest</span>
+            <span class="logo-icon"><i class="fa-solid fa-meteor"></i></span> <span style="font-weight: 700; font-size: 1.5rem;">SkillNest</span>
         </div>
         <div class="nav-links-top">
             <a href="#features">Features</a>
@@ -331,11 +332,11 @@
                     <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); display:flex; align-items:center; justify-content:center; font-weight:700; color:white; font-size:0.85rem;">M</div>
                     <div>
                         <div style="font-weight: 600; font-size: 0.9rem;">Meghna Roy</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">⚡ Level 8 • 2,400 XP</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);"><i class="fa-solid fa-bolt"></i> Level 8 • 2,400 XP</div>
                     </div>
                 </div>
                 <div style="font-size: 0.85rem; color: var(--text-muted);">
-                    Just shipped Node.js backend for my new project! 🚀
+                    Just shipped Node.js backend for my new project! <i class="fa-solid fa-rocket"></i>
                 </div>
             </div>
 
@@ -347,34 +348,34 @@
             </div>
 
             <div class="glass-card f-card f-card-3" style="padding: 18px; width: 220px; background: rgba(6,182,212,0.06);">
-                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 8px;">⚡ Daily Challenge</div>
+                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 8px;"><i class="fa-solid fa-bolt"></i> Daily Challenge</div>
                 <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Build a Todo App with React</div>
                 <div class="badge badge-purple" style="display:inline-block;">+100 XP</div>
             </div>
         </div>
 
         <div class="hero-content">
-            <span class="hero-tag">🌟 The Future of Student Collaboration</span>
-            <h1 class="hero-title">Your <span class="text-gradient">Cosmic</span> Hub for Freelancing & Up‑skilling</h1>
+            <span class="hero-tag"><i class="fa-solid fa-graduation-cap"></i> India's Student Freelance Marketplace</span>
+            <h1 class="hero-title">Earn Money. <span class="text-gradient">Hire Talent.</span> Level Up.</h1>
             <p class="hero-subtitle">
-                SkillNest is the ultimate platform where students connect, showcase projects, complete daily challenges, and earn through freelance gigs. Master your craft and level up your XP!
+                SkillNest is the freelancing marketplace built exclusively for students. Sell your coding, design, or writing skills to other students — or hire affordable talent for your next project. 100% student-powered.
             </p>
             <div class="hero-buttons">
-                <a href="register.jsp" class="btn-solid" style="text-decoration:none;">🚀 Launch Your Journey</a>
-                <a href="#features" class="btn-neon btn-cyan" style="text-decoration:none;">Explore Features</a>
+                <a href="register.jsp" class="btn-solid" style="text-decoration:none;"><i class="fa-solid fa-money-bill-wave"></i> Start Earning</a>
+                <a href="services" class="btn-neon btn-cyan" style="text-decoration:none;">Browse Services</a>
             </div>
             <div class="hero-stats-row">
                 <div class="hero-stat">
                     <div class="hero-stat-val text-gradient">500+</div>
-                    <div class="hero-stat-label">Active Students</div>
+                    <div class="hero-stat-label">Student Freelancers</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-val text-gradient">1,200+</div>
-                    <div class="hero-stat-label">Services Posted</div>
+                    <div class="hero-stat-label">Services Listed</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-val text-gradient">50K+</div>
-                    <div class="hero-stat-label">XP Earned</div>
+                    <div class="hero-stat-val text-gradient">$5–$200</div>
+                    <div class="hero-stat-label">Starting Price</div>
                 </div>
             </div>
         </div>
@@ -384,29 +385,29 @@
     <section class="section" id="features">
         <div class="section-inner">
             <div class="section-header reveal">
-                <h2>Everything You Need to <span class="text-gradient">Level Up</span></h2>
-                <p>Powerful tools designed for students who want to learn, earn, and connect in one cosmic platform.</p>
+                <h2>Everything You Need to <span class="text-gradient">Earn &amp; Hire</span></h2>
+                <p>A two-sided marketplace built for students: sell your skills and earn real money, or hire affordable student talent for your next project.</p>
                 <div class="section-divider"></div>
             </div>
 
             <div class="features-grid">
                 <div class="glass-card feature-card reveal">
-                    <div class="feature-icon">💼</div>
-                    <h3>Freelance Marketplace</h3>
-                    <p>Offer your skills as services — from web development to graphic design. Set your price, get booked, and start earning.</p>
+                    <div class="feature-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    <h3>Earn Real Money</h3>
+                    <p>List your skills as a service and start getting paid. Set your price, get booked by other students, and build your freelance income while still in college.</p>
                 </div>
                 <div class="glass-card feature-card reveal">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Daily Challenges</h3>
-                    <p>Accept daily coding, design, and writing challenges. Complete them to earn XP and climb the leaderboard ranks.</p>
+                    <div class="feature-icon"><i class="fa-solid fa-user-group"></i></div>
+                    <h3>Hire Student Talent</h3>
+                    <p>Need a website, logo, or essay edited? Hire talented students at student-friendly prices — starting from as little as $5.</p>
                 </div>
                 <div class="glass-card feature-card reveal">
-                    <div class="feature-icon">🏆</div>
+                    <div class="feature-icon"><i class="fa-solid fa-trophy"></i></div>
                     <h3>XP & Leaderboard</h3>
                     <p>Every action earns XP — posting, connecting, completing challenges. Level up and compete for the top spot.</p>
                 </div>
                 <div class="glass-card feature-card reveal">
-                    <div class="feature-icon">📝</div>
+                    <div class="feature-icon"><i class="fa-solid fa-file-signature"></i></div>
                     <h3>Share Notes & Projects</h3>
                     <p>Post study notes, project showcases, and resources. Get likes and saves from the community.</p>
                 </div>
@@ -416,7 +417,7 @@
                     <p>Connect with peers from your college and beyond. Build your professional network while still in school.</p>
                 </div>
                 <div class="glass-card feature-card reveal">
-                    <div class="feature-icon">💬</div>
+                    <div class="feature-icon"><i class="fa-solid fa-comment-dots"></i></div>
                     <h3>Direct Messaging</h3>
                     <p>Chat directly with service providers, collaborators, and fellow students. Seamless real-time communication.</p>
                 </div>
@@ -494,7 +495,7 @@
 
             <div class="testimonials-grid">
                 <div class="glass-card testimonial-card reveal">
-                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                     <p class="testimonial-text">"SkillNest completely changed how I approach freelancing. I went from zero clients to consistent bookings in just two weeks. The XP system keeps me motivated daily!"</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar">A</div>
@@ -505,7 +506,7 @@
                     </div>
                 </div>
                 <div class="glass-card testimonial-card reveal">
-                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                     <p class="testimonial-text">"The daily challenges pushed me to learn things I would have never tried on my own. I've grown so much as a designer since joining this platform."</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar" style="background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));">S</div>
@@ -516,7 +517,7 @@
                     </div>
                 </div>
                 <div class="glass-card testimonial-card reveal">
-                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                     <p class="testimonial-text">"I love how I can share my study notes and actually help people. The connections I've made through SkillNest have turned into real collaborations."</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar" style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));">R</div>
@@ -534,10 +535,10 @@
     <section class="cta-section">
         <div class="orb" style="width:400px; height:400px; background:var(--accent-purple); top: -100px; right: 20%; opacity:0.15;"></div>
         <div class="glass-card cta-card reveal" style="border-radius: 24px;">
-            <h2>Ready to Begin Your <span class="text-gradient">Cosmic Journey</span>?</h2>
-            <p>Join thousands of students already leveling up their skills, earning through freelance gigs, and building lasting connections.</p>
+            <h2>Ready to Start <span class="text-gradient">Earning Today</span>?</h2>
+            <p>Join hundreds of students already making money with their skills. Sign up free and post your first service in minutes.</p>
             <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                <a href="register.jsp" class="btn-solid" style="text-decoration:none; font-size: 1.1rem; padding: 16px 40px; border-radius: 12px;">🚀 Create Free Account</a>
+                <a href="register.jsp" class="btn-solid" style="text-decoration:none; font-size: 1.1rem; padding: 16px 40px; border-radius: 12px;"><i class="fa-solid fa-rocket"></i> Create Free Account</a>
                 <a href="login.jsp" class="btn-neon btn-cyan" style="text-decoration:none; font-size: 1.1rem; padding: 16px 40px; border-radius: 12px;">Sign In</a>
             </div>
         </div>
@@ -548,7 +549,7 @@
         <div class="footer-inner">
             <div class="footer-brand">
                 <div class="logo-area">
-                    <span class="logo-icon">☄️</span> <span style="font-weight: 700; font-size: 1.5rem;">SkillNest</span>
+                    <span class="logo-icon"><i class="fa-solid fa-meteor"></i></span> <span style="font-weight: 700; font-size: 1.5rem;">SkillNest</span>
                 </div>
                 <p>The ultimate cosmic platform for students to learn, earn, and connect. Build your future, one skill at a time.</p>
             </div>
@@ -573,7 +574,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 SkillNest. Crafted with ❤️ for students, by students.</p>
+            <p>© 2026 SkillNest. Crafted with <i class="fa-solid fa-heart" style="color: #e23670;"></i> for students, by students.</p>
         </div>
     </footer>
 

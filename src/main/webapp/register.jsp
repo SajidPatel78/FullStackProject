@@ -4,13 +4,14 @@
 <head>
     <title>SkillNest - Register</title>
     <link rel="stylesheet" type="text/css" href="css/style.css?v=2.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     
     <div class="auth-wrapper">
         <div class="glass-card auth-card" style="max-width: 450px;">
             <div style="text-align: center; margin-bottom: 20px;">
-                <span class="logo-icon">☄️</span> <span style="font-size: 1.5rem; font-weight: bold;">SkillNest</span>
+                <span class="logo-icon"><i class="fa-solid fa-meteor"></i></span> <span style="font-size: 1.5rem; font-weight: bold;">SkillNest</span>
             </div>
             <h2>Create an Account</h2>
             
