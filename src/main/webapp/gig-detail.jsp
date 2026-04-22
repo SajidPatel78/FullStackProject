@@ -161,6 +161,13 @@
             .gig-layout { grid-template-columns: 1fr; }
             .order-card { position: static; }
         }
+        @media (max-width: 600px) {
+            .gig-detail-page { padding: 20px 10px 80px; }
+            .gig-hero h1 { font-size: 1.8rem; }
+            .gig-hero-meta { flex-wrap: wrap; gap: 10px; }
+            .content-card { padding: 25px 20px; }
+            .order-card { padding: 25px 20px; }
+        }
     </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>

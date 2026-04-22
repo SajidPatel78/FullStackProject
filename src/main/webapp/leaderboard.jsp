@@ -220,35 +220,41 @@
         </div>
 
         <!-- Top 3 Podium -->
-        <c:if test="${not empty leaderboard && leaderboard.size() >= 3}">
+        <c:if test="${not empty leaderboard}">
             <div class="podium">
                 <!-- 2nd Place -->
-                <div class="podium-slot podium-2">
-                    <div class="podium-crown">🥈</div>
-                    <div class="podium-avatar">${leaderboard[1].username.substring(0,1).toUpperCase()}</div>
-                    <div class="podium-name">${leaderboard[1].username}</div>
-                    <div class="podium-college">${leaderboard[1].collegeName}</div>
-                    <div class="podium-xp">${leaderboard[1].xp} XP</div>
-                    <div class="podium-level">Level ${leaderboard[1].level}</div>
-                </div>
+                <c:if test="${leaderboard.size() >= 2}">
+                    <div class="podium-slot podium-2">
+                        <div class="podium-crown">🥈</div>
+                        <div class="podium-avatar">${not empty leaderboard[1].username ? leaderboard[1].username.substring(0,1).toUpperCase() : 'U'}</div>
+                        <div class="podium-name">${leaderboard[1].username}</div>
+                        <div class="podium-college">${leaderboard[1].collegeName}</div>
+                        <div class="podium-xp">${leaderboard[1].xp} XP</div>
+                        <div class="podium-level">Level ${leaderboard[1].level}</div>
+                    </div>
+                </c:if>
                 <!-- 1st Place -->
-                <div class="podium-slot podium-1">
-                    <div class="podium-crown">👑</div>
-                    <div class="podium-avatar">${leaderboard[0].username.substring(0,1).toUpperCase()}</div>
-                    <div class="podium-name">${leaderboard[0].username}</div>
-                    <div class="podium-college">${leaderboard[0].collegeName}</div>
-                    <div class="podium-xp">${leaderboard[0].xp} XP</div>
-                    <div class="podium-level">Level ${leaderboard[0].level}</div>
-                </div>
+                <c:if test="${leaderboard.size() >= 1}">
+                    <div class="podium-slot podium-1">
+                        <div class="podium-crown">👑</div>
+                        <div class="podium-avatar">${not empty leaderboard[0].username ? leaderboard[0].username.substring(0,1).toUpperCase() : 'U'}</div>
+                        <div class="podium-name">${leaderboard[0].username}</div>
+                        <div class="podium-college">${leaderboard[0].collegeName}</div>
+                        <div class="podium-xp">${leaderboard[0].xp} XP</div>
+                        <div class="podium-level">Level ${leaderboard[0].level}</div>
+                    </div>
+                </c:if>
                 <!-- 3rd Place -->
-                <div class="podium-slot podium-3">
-                    <div class="podium-crown">🥉</div>
-                    <div class="podium-avatar">${leaderboard[2].username.substring(0,1).toUpperCase()}</div>
-                    <div class="podium-name">${leaderboard[2].username}</div>
-                    <div class="podium-college">${leaderboard[2].collegeName}</div>
-                    <div class="podium-xp">${leaderboard[2].xp} XP</div>
-                    <div class="podium-level">Level ${leaderboard[2].level}</div>
-                </div>
+                <c:if test="${leaderboard.size() >= 3}">
+                    <div class="podium-slot podium-3">
+                        <div class="podium-crown">🥉</div>
+                        <div class="podium-avatar">${not empty leaderboard[2].username ? leaderboard[2].username.substring(0,1).toUpperCase() : 'U'}</div>
+                        <div class="podium-name">${leaderboard[2].username}</div>
+                        <div class="podium-college">${leaderboard[2].collegeName}</div>
+                        <div class="podium-xp">${leaderboard[2].xp} XP</div>
+                        <div class="podium-level">Level ${leaderboard[2].level}</div>
+                    </div>
+                </c:if>
             </div>
         </c:if>
 
@@ -291,7 +297,7 @@
                             ${status.index + 1}
                         </div>
                         <div class="rank-avatar" style="${status.index == 0 ? 'background: linear-gradient(135deg, #fbbf24, #f59e0b);' : status.index == 1 ? 'background: linear-gradient(135deg, #cbd5e1, #94a3b8);' : status.index == 2 ? 'background: linear-gradient(135deg, #d97706, #92400e);' : ''}">
-                            ${user.username.substring(0,1).toUpperCase()}
+                            ${not empty user.username ? user.username.substring(0,1).toUpperCase() : 'U'}
                         </div>
                         <div class="rank-user-info">
                             <div class="rank-username">
@@ -324,5 +330,5 @@
         </c:choose>
 
     </div>
-</body>
+<jsp:include page="mobile-nav.jsp"/>`n</body>
 </html>

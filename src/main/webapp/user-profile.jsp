@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>SkillNest - My Profile</title>
+    <title>SkillNest - ${targetUser.username}'s Profile</title>
     <link rel="stylesheet" type="text/css" href="css/style.css?v=3.0">
     <style>
         .profile-page { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
@@ -35,18 +35,37 @@
 <body>
     <div class="profile-page">
         <div class="back-nav">
-            <a href="feed">← Back to Feed</a>
-            <a href="add-post.jsp" class="btn-solid" style="margin-left:auto; text-decoration:none;">+ Create Post</a>
+            <a href="javascript:history.back()">← Back</a>
+            
+            <!-- Connection Action Form -->
+            <form action="connect" method="post" style="margin-left:auto;">
+                <input type="hidden" name="targetUserId" value="${targetUser.id}">
+                <input type="hidden" name="returnUrl" value="user-profile?id=${targetUser.id}">
+                <c:choose>
+                    <c:when test="${isConnected}">
+                        <input type="hidden" name="action" value="disconnect">
+                        <button type="submit" class="btn-outline" style="border-color: #64748b; color: #64748b;">
+                            <i class="fa-solid fa-user-minus"></i> Disconnect
+                        </button>
+                    </c:when>
+                    <c:otherwise>
+                        <input type="hidden" name="action" value="connect">
+                        <button type="submit" class="btn-solid">
+                            <i class="fa-solid fa-user-plus"></i> Connect
+                        </button>
+                    </c:otherwise>
+                </c:choose>
+            </form>
         </div>
 
         <div class="glass-card profile-banner">
-            <div class="profile-avatar">${sessionScope.user.username.substring(0, 1).toUpperCase()}</div>
-            <h2>${sessionScope.user.username}</h2>
-            <p class="meta">🏫 ${sessionScope.user.collegeName}</p>
-            <p class="meta">✉️ ${sessionScope.user.email}</p>
+            <div class="profile-avatar">${targetUser.username.substring(0, 1).toUpperCase()}</div>
+            <h2>${targetUser.username}</h2>
+            <p class="meta">🏫 ${targetUser.collegeName}</p>
+            <p class="meta">✉️ ${targetUser.email}</p>
             <p style="margin-top:10px;">
-                <span class="badge badge-purple">Level ${sessionScope.user.level}</span>
-                <span class="badge badge-green" style="margin-left:5px;">${sessionScope.user.xp} XP</span>
+                <span class="badge badge-purple">Level ${targetUser.level}</span>
+                <span class="badge badge-green" style="margin-left:5px;">${targetUser.xp} XP</span>
             </p>
 
             <div class="stats-row">
@@ -62,28 +81,21 @@
                     <div class="stat-val text-gradient">${totalLikes != null ? totalLikes : 0}</div>
                     <div class="stat-label">Likes</div>
                 </div>
-                <div class="stat-box">
-                    <a href="connections" style="text-decoration: none;">
-                        <div class="stat-val text-gradient">${connectionsCount != null ? connectionsCount : 0}</div>
-                        <div class="stat-label">Connections</div>
-                    </a>
-                </div>
             </div>
         </div>
 
-        <h3 style="font-size: 1.4rem; margin-bottom: 20px;">📂 My Portfolio</h3>
+        <h3 style="font-size: 1.4rem; margin-bottom: 20px;">📂 Portfolio</h3>
 
         <div class="portfolio-grid">
             <c:choose>
-                <c:when test="${empty myPosts}">
+                <c:when test="${empty userPosts}">
                     <div class="glass-card" style="text-align: center; color: var(--text-muted); padding: 40px; grid-column: 1 / -1;">
-                        <h3 style="margin-top: 0; color: white;">You haven't posted anything yet.</h3>
-                        <p>Share your skills or notes with the community!</p>
-                        <a href="add-post.jsp" class="btn-solid" style="text-decoration:none; display:inline-block; margin-top:15px;">Create Your First Post</a>
+                        <h3 style="margin-top: 0; color: white;">Nothing posted yet.</h3>
+                        <p>${targetUser.username} hasn't posted any gigs or notes.</p>
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <c:forEach var="post" items="${myPosts}">
+                    <c:forEach var="post" items="${userPosts}">
                         <div class="glass-card port-card" style="position:relative;">
                             <span class="badge ${post.postType == 'GIG' ? 'badge-green' : 'badge-purple'}" style="position:absolute; top:20px; right:20px;">
                                 ${post.postType}

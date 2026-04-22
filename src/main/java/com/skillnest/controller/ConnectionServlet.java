@@ -35,6 +35,11 @@ public class ConnectionServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
         String targetIdStr = request.getParameter("targetUserId");
         String action = request.getParameter("action");
+        String returnUrl = request.getParameter("returnUrl");
+
+        if (returnUrl == null || returnUrl.isEmpty()) {
+            returnUrl = "feed";
+        }
 
         if (targetIdStr != null && !targetIdStr.isEmpty()) {
             try {
@@ -55,6 +60,6 @@ public class ConnectionServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect("feed");
+        response.sendRedirect(returnUrl);
     }
 }

@@ -311,7 +311,7 @@
             <c:otherwise>
                 <c:forEach var="gig" items="${gigs}">
                     <c:set var="catLower" value="${gig.category.toLowerCase()}" />
-                    <a href="gig?id=${gig.id}" class="gig-card">
+                    <div class="gig-card" onclick="window.location.href='gig?id=${gig.id}'">
 
                         <!-- Banner -->
                         <div class="gig-banner banner-${catLower}">
@@ -323,8 +323,8 @@
                         <div class="gig-card-body">
                             <div class="gig-seller">
                                 <div class="gig-avatar">${gig.username.substring(0,1).toUpperCase()}</div>
-                                <div>
-                                    <div class="gig-seller-name">${gig.username}</div>
+                                <div onclick="event.stopPropagation();">
+                                    <a href="user-profile?id=${gig.userId}" class="gig-seller-name" style="text-decoration:none; color:inherit;">${gig.username}</a>
                                     <div class="gig-seller-level"><i class="fa-solid fa-book-open"></i> ${gig.userCollege}</div>
                                 </div>
                             </div>
@@ -350,7 +350,7 @@
                             </div>
                             <span style="font-size:0.8rem; color:var(--accent-cyan);">View Gig →</span>
                         </div>
-                    </a>
+                    </div>
                 </c:forEach>
             </c:otherwise>
         </c:choose>
@@ -368,5 +368,5 @@
     </c:if>
 
 </div><!-- /.gigs-page -->
-</body>
+<jsp:include page="mobile-nav.jsp"/>`n</body>
 </html>

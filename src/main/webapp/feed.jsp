@@ -559,7 +559,7 @@
                                         <div class="gig-author">
                                             <div class="gig-avatar-sm">${post.username.substring(0,1).toUpperCase()}</div>
                                             <div>
-                                                <div class="gig-author-name">${post.username}</div>
+                                                <a href="user-profile?id=${post.userId}" class="gig-author-name" style="text-decoration:none; color:white;">${post.username}</a>
                                                 <div class="gig-author-college">${post.userCollege}</div>
                                             </div>
                                         </div>
@@ -613,7 +613,7 @@
                                     <div class="notes-author">
                                         <div class="notes-avatar">${post.username.substring(0,1).toUpperCase()}</div>
                                         <div>
-                                            <div class="notes-name">${post.username}</div>
+                                            <a href="user-profile?id=${post.userId}" class="notes-name" style="text-decoration:none; color:white;">${post.username}</a>
                                             <div class="notes-meta">${post.userCollege} • ${post.category}</div>
                                         </div>
                                     </div>
@@ -695,7 +695,7 @@
                         <div class="suggest-item">
                             <div class="suggest-avatar">${s.username.substring(0,1).toUpperCase()}</div>
                             <div class="suggest-info">
-                                <div class="suggest-name">${s.username}</div>
+                                <a href="user-profile?id=${s.id}" class="suggest-name" style="text-decoration:none; color:white;">${s.username}</a>
                                 <div class="suggest-college">${s.collegeName}</div>
                             </div>
                             <form action="connect" method="post" style="margin:0;">
@@ -723,7 +723,7 @@
                         <div class="lb-item">
                             <div class="lb-rank ${st.index == 0 ? 'lb-1' : st.index == 1 ? 'lb-2' : st.index == 2 ? 'lb-3' : (leader.id == sessionScope.user.id ? 'lb-self' : 'lb-n')}">${st.index + 1}</div>
                             <div class="lb-info">
-                                <div class="lb-name">${leader.username}<c:if test="${leader.id == sessionScope.user.id}"> <span style="font-size:0.68rem; color:var(--accent-cyan);">(you)</span></c:if></div>
+                                <div class="lb-name"><a href="user-profile?id=${leader.id}" style="text-decoration:none; color:inherit;">${leader.username}</a><c:if test="${leader.id == sessionScope.user.id}"> <span style="font-size:0.68rem; color:var(--accent-cyan);">(you)</span></c:if></div>
                                 <div class="lb-college">Lv.${leader.level}</div>
                             </div>
                             <div class="lb-xp">${leader.xp} XP</div>
@@ -752,5 +752,5 @@
     </aside>
 
 </div><!-- /.app-layout -->
-</body>
+<jsp:include page="mobile-nav.jsp"/>`n</body>
 </html>

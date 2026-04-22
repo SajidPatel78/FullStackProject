@@ -122,6 +122,11 @@
             .create-page { flex-direction: column-reverse; align-items: center; }
             .tips-sidebar { width: 100%; max-width: 620px; position: static; }
         }
+        @media (max-width: 600px) {
+            .create-page { padding: 20px 10px 40px; }
+            .form-card { padding: 25px 20px; }
+            .action-row { flex-direction: column; }
+        }
     </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>

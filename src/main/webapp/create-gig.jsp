@@ -59,7 +59,15 @@
         .ex-title { font-size: 0.8rem; color: var(--text-muted); padding: 6px 10px; border-radius: 7px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 6px; cursor: pointer; transition: all 0.2s; }
         .ex-title:hover { border-color: rgba(139,92,246,0.3); color: white; background: rgba(139,92,246,0.07); }
 
-        @media (max-width: 880px) { .create-page { flex-direction: column-reverse; align-items: center; } .tips-col { width: 100%; max-width: 600px; position: static; } }
+        @media (max-width: 880px) {
+            .create-page { flex-direction: column-reverse; align-items: center; }
+            .tips-col { width: 100%; max-width: 600px; position: static; }
+        }
+        @media (max-width: 600px) {
+            .create-page { padding: 20px 10px 40px; }
+            .form-card { padding: 25px 20px; }
+            .submit-row { flex-direction: column; }
+        }
     </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>

@@ -173,6 +173,7 @@ body {
     width: 100%;
     max-width: 400px;
     padding: 40px;
+    box-sizing: border-box;
 }
 .auth-card h2 {
     margin-top: 0;
@@ -210,3 +211,98 @@ body {
 .badge-green { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
 .badge-pink { background: rgba(247, 42, 117, 0.2); color: #f472b6; border: 1px solid rgba(247, 42, 117, 0.4); }
 .badge-purple { background: rgba(139, 92, 246, 0.2); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE BOTTOM NAVIGATION
+═══════════════════════════════════════════════════════ */
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background: rgba(15, 10, 30, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mobile-nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    padding: 0 10px;
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.65rem;
+    font-weight: 600;
+    gap: 4px;
+    width: 20%;
+    transition: all 0.2s;
+}
+
+.mobile-nav-item i {
+    font-size: 1.2rem;
+}
+
+.mobile-nav-item:hover, .mobile-nav-item.active {
+    color: white;
+}
+
+.mobile-nav-item.active {
+    color: var(--accent-purple);
+}
+
+.mobile-nav-item.active i {
+    color: var(--accent-pink);
+    transform: scale(1.1);
+}
+
+/* Global Mobile Tweaks */
+@media (max-width: 800px) {
+    body {
+        padding-bottom: 75px; /* Leave space for bottom nav */
+    }
+    .mobile-bottom-nav {
+        display: block;
+    }
+}
+
+@media (max-width: 600px) {
+    .challenge-grid, .portfolio-grid, .connections-grid, .gigs-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .stats-row {
+        gap: 15px !important;
+        flex-wrap: wrap;
+    }
+    .profile-banner {
+        padding: 20px 10px !important;
+    }
+    .page-header h1 {
+        font-size: 1.5rem !important;
+    }
+    .xp-summary {
+        padding: 20px !important;
+        justify-content: center !important;
+        text-align: center;
+    }
+    .xp-badge {
+        width: 100%;
+        justify-content: center;
+    }
+    .auth-card {
+        padding: 30px 20px !important;
+    }
+}

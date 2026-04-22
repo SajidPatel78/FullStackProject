@@ -286,11 +286,17 @@
             .hero-stats-row { gap: 30px; flex-wrap: wrap; }
             .features-grid, .testimonials-grid { grid-template-columns: 1fr; }
             .stats-row { flex-wrap: wrap; gap: 40px; }
-            .landing-nav { padding: 15px 20px; }
-            .nav-links-top { gap: 15px; }
+            .landing-nav { padding: 15px 20px; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .nav-links-top { gap: 15px; flex-wrap: wrap; justify-content: center; }
             .section-header h2 { font-size: 2rem; }
             .footer-inner { grid-template-columns: 1fr; }
             .cta-card h2 { font-size: 1.8rem; }
+        }
+        @media (max-width: 480px) {
+            .hero-title { font-size: 2.2rem; }
+            .hero-buttons { flex-direction: column; width: 100%; padding: 0 20px; box-sizing: border-box; }
+            .hero-buttons .btn-solid, .hero-buttons .btn-neon { width: 100%; text-align: center; }
+            .step-card { padding: 25px 15px; }
         }
     </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

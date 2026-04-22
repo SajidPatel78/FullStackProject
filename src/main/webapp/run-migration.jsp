@@ -58,6 +58,14 @@
         } 
         catch (SQLException e) { log.append("❌ failed to update post_type: " + e.getMessage() + "\n"); }
         
+        // Rename service_id to post_id in reviews
+        try { stmt.executeUpdate("ALTER TABLE reviews CHANGE service_id post_id INT NOT NULL"); log.append("<i class=\"fa-solid fa-circle-check\"></i> Renamed 'service_id' to 'post_id' in reviews\n"); } 
+        catch (SQLException e) { log.append("⏭️ 'service_id' already renamed in reviews\n"); }
+        
+        // Rename service_id to post_id in bookings
+        try { stmt.executeUpdate("ALTER TABLE bookings CHANGE service_id post_id INT NOT NULL"); log.append("<i class=\"fa-solid fa-circle-check\"></i> Renamed 'service_id' to 'post_id' in bookings\n"); } 
+        catch (SQLException e) { log.append("⏭️ 'service_id' already renamed in bookings\n"); }
+        
         log.append("\n🎉 Database migration complete!");
         
     } catch (Exception e) {

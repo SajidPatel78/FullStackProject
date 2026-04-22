@@ -9,6 +9,7 @@ public class Post {
     private String postType;
     private String category;
     private double price;
+    private int deliveryDays = 3;
     private int userId;
     private Timestamp createdAt;
 
@@ -45,6 +46,9 @@ public class Post {
 
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
+
+    public int getDeliveryDays() { return deliveryDays; }
+    public void setDeliveryDays(int deliveryDays) { this.deliveryDays = deliveryDays; }
 
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }

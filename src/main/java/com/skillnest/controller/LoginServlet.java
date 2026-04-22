@@ -56,12 +56,8 @@ public class LoginServlet extends HttpServlet {
             }
 
             // ── COOKIES ────────────────────────────────────────────────────
-            // 1. Display cookie (non-sensitive, used by dashboard.jsp for demo)
-            javax.servlet.http.Cookie usernameCookie =
-                    new javax.servlet.http.Cookie("username", user.getUsername());
-            usernameCookie.setMaxAge(rememberMe ? AutoLoginFilter.COOKIE_MAX_AGE : -1); // -1 = session cookie
-            usernameCookie.setPath("/");
-            response.addCookie(usernameCookie);
+            // The display cookie was removed to prevent IllegalArgumentException 
+            // when usernames contain spaces, as it's no longer used by the new feed.jsp.
 
             // 2. Remember Me cookie — persists login across browser restarts
             if (rememberMe) {

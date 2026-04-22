@@ -14,7 +14,7 @@ import java.util.List;
 public class PostDAO {
 
     public boolean addPost(Post post) {
-        String query = "INSERT INTO posts (title, description, post_type, category, price, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO posts (title, description, post_type, category, price, delivery_days, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
              
@@ -25,10 +25,12 @@ public class PostDAO {
             
             if ("GIG".equals(post.getPostType())) {
                 preparedStatement.setDouble(5, post.getPrice());
+                preparedStatement.setInt(6, post.getDeliveryDays());
             } else {
                 preparedStatement.setNull(5, Types.DECIMAL);
+                preparedStatement.setNull(6, Types.INTEGER);
             }
-            preparedStatement.setInt(6, post.getUserId());
+            preparedStatement.setInt(7, post.getUserId());
             
             int result = preparedStatement.executeUpdate();
             return result > 0;
@@ -57,10 +59,11 @@ public class PostDAO {
                     .append("INNER JOIN users u ON p.user_id = u.id ")
                     .append("LEFT JOIN reviews r ON p.id = r.post_id ")
                     .append("LEFT JOIN bookings b ON p.id = b.post_id ")
-                    .append("LEFT JOIN reviews cur_r ON p.id = cur_r.post_id ")
+                    .append("LEFT JOIN reviews cur_r ON p.id = cur_r.post_id AND cur_r.user_id = ? ")
                     .append("WHERE 1=1 ");
                     
         List<Object> params = new ArrayList<>();
+        params.add(currentUserId);
         params.add(currentUserId);
         params.add(currentUserId);
         params.add(currentUserId);
@@ -127,10 +130,11 @@ public class PostDAO {
                     .append("INNER JOIN users u ON p.user_id = u.id ")
                     .append("LEFT JOIN reviews r ON p.id = r.post_id ")
                     .append("LEFT JOIN bookings b ON p.id = b.post_id ")
-                    .append("LEFT JOIN reviews cur_r ON p.id = cur_r.post_id ")
+                    .append("LEFT JOIN reviews cur_r ON p.id = cur_r.post_id AND cur_r.user_id = ? ")
                     .append("WHERE 1=1 ");
         
         List<Object> params = new ArrayList<>();
+        params.add(currentUserId);
         params.add(currentUserId);
         params.add(currentUserId);
         params.add(currentUserId);
@@ -190,7 +194,7 @@ public class PostDAO {
                        "INNER JOIN users u ON p.user_id = u.id " +
                        "LEFT JOIN reviews r ON p.id = r.post_id " +
                        "LEFT JOIN bookings b ON p.id = b.post_id " +
-                       "LEFT JOIN reviews cur_r ON p.id = cur_r.post_id " +
+                       "LEFT JOIN reviews cur_r ON p.id = cur_r.post_id AND cur_r.user_id = ? " +
                        "WHERE p.user_id = ? " +
                        "GROUP BY p.id, u.username, u.college_name, u.email " +
                        "ORDER BY p.created_at DESC";
@@ -202,7 +206,8 @@ public class PostDAO {
             preparedStatement.setInt(2, currentUserId);
             preparedStatement.setInt(3, currentUserId);
             preparedStatement.setInt(4, currentUserId);
-            preparedStatement.setInt(5, targetUserId);
+            preparedStatement.setInt(5, currentUserId);
+            preparedStatement.setInt(6, targetUserId);
             
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -292,6 +297,9 @@ public class PostDAO {
         post.setCategory(rs.getString("category"));
         if (rs.getObject("price") != null) {
             post.setPrice(rs.getDouble("price"));
+        }
+        if (rs.getObject("delivery_days") != null) {
+            post.setDeliveryDays(rs.getInt("delivery_days"));
         }
         post.setUserId(rs.getInt("user_id"));
         post.setCreatedAt(rs.getTimestamp("created_at"));

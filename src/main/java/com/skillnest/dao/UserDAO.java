@@ -259,4 +259,31 @@ public class UserDAO {
         }
         return 0;
     }
+
+    /**
+     * Get users that this user is connected to.
+     */
+    public List<User> getConnections(int userId) {
+        List<User> connections = new ArrayList<>();
+        String query = "SELECT u.* FROM users u " +
+                       "INNER JOIN connections c " +
+                       "ON (c.follower_id = ? AND c.following_id = u.id) " +
+                       "OR (c.following_id = ? AND c.follower_id = u.id) " +
+                       "GROUP BY u.id " +
+                       "ORDER BY u.xp DESC";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                populateUserFromRS(user, rs);
+                connections.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return connections;
+    }
 }

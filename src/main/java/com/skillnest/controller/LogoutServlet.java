@@ -37,12 +37,7 @@ public class LogoutServlet extends HttpServlet {
         // Clear the remember_me cookie from the browser
         AutoLoginFilter.clearRememberMeCookie(response);
 
-        // Also expire the display cookie
-        javax.servlet.http.Cookie usernameCookie =
-                new javax.servlet.http.Cookie("username", "");
-        usernameCookie.setMaxAge(0);
-        usernameCookie.setPath("/");
-        response.addCookie(usernameCookie);
+        // The display cookie logic was removed.
 
         response.sendRedirect("index.jsp");
     }

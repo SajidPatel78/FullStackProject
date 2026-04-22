@@ -401,5 +401,5 @@
         </c:choose>
 
     </div>
-</body>
+<jsp:include page="mobile-nav.jsp"/>`n</body>
 </html>

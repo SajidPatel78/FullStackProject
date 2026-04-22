@@ -75,6 +75,10 @@ public class PostServlet extends HttpServlet {
         post.setCategory(category);
         post.setPrice(price);
         post.setUserId(user.getId());
+        
+        if ("GIG".equals(postType) && !nullOrEmpty(deliveryDays)) {
+            try { post.setDeliveryDays(Integer.parseInt(deliveryDays)); } catch (NumberFormatException ignored) {}
+        }
 
         // ── Save ──────────────────────────────────────────────────
         if (postDAO.addPost(post)) {
