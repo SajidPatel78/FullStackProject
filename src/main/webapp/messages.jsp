@@ -74,5 +74,6 @@
         var chatHistory = document.getElementById("chatHistory");
         if (chatHistory) { chatHistory.scrollTop = chatHistory.scrollHeight; }
     </script>
-<jsp:include page="mobile-nav.jsp"/>`n</body>
+<jsp:include page="mobile-nav.jsp"/>
+</body>
 </html>

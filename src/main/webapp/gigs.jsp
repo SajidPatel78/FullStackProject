@@ -37,7 +37,7 @@
             background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
             border-radius: 50px; overflow: hidden; padding: 6px 6px 6px 20px;
             gap: 8px; align-items: center;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.3), 0 0 0 0 var(--glow-purple);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3), 0 0 0 0 rgba(139,92,246,0.3);
             transition: box-shadow 0.3s;
         }
         .hero-search:focus-within { box-shadow: 0 4px 30px rgba(0,0,0,0.3), 0 0 0 3px rgba(139,92,246,0.3); }
@@ -368,5 +368,6 @@
     </c:if>
 
 </div><!-- /.gigs-page -->
-<jsp:include page="mobile-nav.jsp"/>`n</body>
+<jsp:include page="mobile-nav.jsp"/>
+</body>
 </html>

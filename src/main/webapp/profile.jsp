@@ -109,5 +109,6 @@
             </c:choose>
         </div>
     </div>
-<jsp:include page="mobile-nav.jsp"/>`n</body>
+<jsp:include page="mobile-nav.jsp"/>
+</body>
 </html>

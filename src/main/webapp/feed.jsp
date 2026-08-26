@@ -356,7 +356,7 @@
            RESPONSIVE
         ═══════════════════════════════════════════════════════ */
         @media (max-width: 1100px) { .app-layout { grid-template-columns: 56px 1fr 260px; } .sidebar { padding: 20px 6px; } .sidebar-logo span:last-child, .nav-section-label, .nav-item span:not(.nav-icon), .sidebar-user .sidebar-username, .sidebar-user .sidebar-level, .xp-track, .xp-label { display: none; } .nav-item { justify-content: center; padding: 12px; } .sidebar-user-top { justify-content: center; } .sidebar-user-top div { display: none; } }
-        @media (max-width: 800px) { .app-layout { grid-template-columns: 1fr; } .sidebar, .right-col { display: none; } .feed-center { padding: 16px; } .mini-cards { grid-template-columns: 1fr; } .quick-stats { gap: 8px; } }
+        @media (max-width: 800px) { .app-layout { grid-template-columns: 1fr; } .sidebar, .right-col, .feed-right { display: none; } .feed-center { padding: 16px; } .mini-cards { grid-template-columns: 1fr; } .quick-stats { gap: 8px; } }
     </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -752,5 +752,6 @@
     </aside>
 
 </div><!-- /.app-layout -->
-<jsp:include page="mobile-nav.jsp"/>`n</body>
+<jsp:include page="mobile-nav.jsp"/>
+</body>
 </html>
